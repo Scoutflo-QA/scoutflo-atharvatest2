@@ -24,7 +24,7 @@ metadata:
   labels:
     app: test-pd-pp
 spec:
-  replicas: 1
+  replicas: 390
   selector:
     matchLabels:
       app: test-pd-pp
