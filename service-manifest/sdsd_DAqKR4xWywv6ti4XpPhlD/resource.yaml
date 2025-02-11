@@ -1,0 +1,80 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: clarity-pre
+  namespace: cert-service-test
+  labels:
+    app: clarity-pre
+spec:
+  type: ClusterIP
+  selector:
+    app: clarity-pre
+  ports:
+    - name: https
+      protocol: TCP
+      port: 3000
+      targetPort: 3000
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: clarity-pre
+  namespace: cert-service-test
+  labels:
+    app: clarity-pre
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: clarity-pre
+  template:
+    metadata:
+      labels:
+        app: clarity-pre
+    spec:
+      containers:
+        - name: clarity-pre-container
+          image: satyamp07/waitlist:latest
+          ports:
+            - containerPort: 3000
+          resources:
+            requests:
+              memory: 512Mi
+              cpu: 250m
+            limits:
+              memory: 1024Mi
+              cpu: 500m
+          env:
+            - name: NODE_ENV
+              value: production
+            - name: NEXT_PUBLIC_ATLAS_BACKEND
+              value: https://api.atlas.scoutflo.com/api
+      imagePullSecrets:
+        - name: scoutflo-satyam-docker-the-latest-docker
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: clarity-pre
+  namespace: cert-service-test
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+spec:
+  rules:
+    - host: waitlistdocker-qmiqa.scoutflo.agency
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: clarity-pre
+                port:
+                  number: 3000
+  tls:
+    - hosts:
+        - waitlistdocker-qmiqa.scoutflo.agency
+      secretName: scoutflo-agency-wildcard-tls
