@@ -20,7 +20,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: clarity-pre
-  namespace: cert-service-test
+  namespace: cert-service-test-1
   labels:
     app: clarity-pre
 spec:
