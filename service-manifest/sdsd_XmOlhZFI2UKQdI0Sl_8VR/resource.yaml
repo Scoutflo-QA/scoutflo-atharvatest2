@@ -48,6 +48,8 @@ spec:
           env:
             - name: NODE_ENV
               value: production
+            - name: DB_USER
+              value: prod
       imagePullSecrets:
         - name: scoutflo-deepaks-docker
 
