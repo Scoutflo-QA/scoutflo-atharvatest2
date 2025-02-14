@@ -75,7 +75,7 @@ spec:
             - name: REDIS_PORT
               value: "6379"
             - name: REDIS_USE_PASSWORD
-              value: no
+              value: "no"
             - name: REDIS_PASSWORD
               value: your-password
       imagePullSecrets:
