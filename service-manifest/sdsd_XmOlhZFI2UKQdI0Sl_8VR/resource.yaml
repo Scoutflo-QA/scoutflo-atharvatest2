@@ -1,0 +1,77 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: deepak-deployment
+  namespace: default
+  labels:
+    app: deepak-deployment
+spec:
+  type: ClusterIP
+  selector:
+    app: deepak-deployment
+  ports:
+    - name: https
+      protocol: TCP
+      port: 5000
+      targetPort: 5000
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deepak-deployment
+  namespace: default
+  labels:
+    app: deepak-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: deepak-deployment
+  template:
+    metadata:
+      labels:
+        app: deepak-deployment
+    spec:
+      containers:
+        - name: deepak-deployment-container
+          image: codewithdeepak/damnserver:latest
+          ports:
+            - containerPort: 5000
+          resources:
+            requests:
+              memory: 256Mi
+              cpu: 200m
+            limits:
+              memory: 512Mi
+              cpu: 400m
+          env: []
+      imagePullSecrets:
+        - name: scoutflo-deepaks-docker
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: deepak-deployment
+  namespace: default
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/default-backend: deepak-deployment
+spec:
+  rules:
+    - host: deepaks-service-ybdmc.scoutflo.agency
+      http:
+        paths:
+          - path: /test
+            pathType: Prefix
+            backend:
+              service:
+                name: deepak-deployment
+                port:
+                  number: 5000
+  tls:
+    - hosts:
+        - deepaks-service-ybdmc.scoutflo.agency
+      secretName: scoutflo-agency-wildcard-tls
