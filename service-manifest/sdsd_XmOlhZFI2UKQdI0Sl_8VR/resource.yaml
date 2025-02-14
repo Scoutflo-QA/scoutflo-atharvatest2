@@ -45,7 +45,9 @@ spec:
             limits:
               memory: 512Mi
               cpu: 400m
-          env: []
+          env:
+            - name: NEXT_PUBLIC_ATLAS_BACKEND
+              value: https://api.atlas.scoutflo.com/api
       imagePullSecrets:
         - name: scoutflo-deepaks-docker
 
