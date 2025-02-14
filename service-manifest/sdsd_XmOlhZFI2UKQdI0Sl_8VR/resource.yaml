@@ -47,13 +47,37 @@ spec:
               cpu: 400m
           env:
             - name: NODE_ENV
-              value: production
+              value: development
+            - name: PORT
+              value: "5000"
+            - name: DB_HOST
+              value: db-host
             - name: DB_USER
-              value: prod
+              value: db-user
             - name: DB_PASS
-              value: test
+              value: db-pass
             - name: DB_NAME
-              value: test
+              value: db-name
+            - name: JWT_SECRET
+              value: your-jwt-secret-key
+            - name: JWT_ACCESS_EXPIRATION_MINUTES
+              value: "5"
+            - name: JWT_REFRESH_EXPIRATION_DAYS
+              value: "30"
+            - name: LOG_FOLDER
+              value: logs/
+            - name: LOG_FILE
+              value: "%DATE%-app-log.log"
+            - name: LOG_LEVEL
+              value: error
+            - name: REDIS_HOST
+              value: redis-host
+            - name: REDIS_PORT
+              value: "6379"
+            - name: REDIS_USE_PASSWORD
+              value: no
+            - name: REDIS_PASSWORD
+              value: your-password
       imagePullSecrets:
         - name: scoutflo-deepaks-docker
 
