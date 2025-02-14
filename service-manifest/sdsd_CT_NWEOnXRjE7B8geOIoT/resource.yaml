@@ -1,0 +1,79 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: wevervqrevr
+  namespace: default
+  labels:
+    app: wevervqrevr
+spec:
+  type: ClusterIP
+  selector:
+    app: wevervqrevr
+  ports:
+    - name: https
+      protocol: TCP
+      port: 3000
+      targetPort: 3000
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wevervqrevr
+  namespace: default
+  labels:
+    app: wevervqrevr
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: wevervqrevr
+  template:
+    metadata:
+      labels:
+        app: wevervqrevr
+    spec:
+      containers:
+        - name: wevervqrevr-container
+          image: satyamp07/waitlist:latest
+          ports:
+            - containerPort: 3000
+          resources:
+            requests:
+              memory: 512Mi
+              cpu: 250m
+            limits:
+              memory: 1024Mi
+              cpu: 500m
+          env:
+            - name: NEXT_PUBLIC_ATLAS_BACKEND
+              value: https://api.atlas.scoutflo.com/api
+      imagePullSecrets:
+        - name: scoutflo-satyam-docker-the-latest-docker
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: wevervqrevr
+  namespace: default
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/default-backend: wevervqrevr
+spec:
+  rules:
+    - host: waitlistdocker-vrpno.scoutflo.agency
+      http:
+        paths:
+          - path: /test
+            pathType: Prefix
+            backend:
+              service:
+                name: wevervqrevr
+                port:
+                  number: 3000
+  tls:
+    - hosts:
+        - waitlistdocker-vrpno.scoutflo.agency
+      secretName: scoutflo-agency-wildcard-tls
