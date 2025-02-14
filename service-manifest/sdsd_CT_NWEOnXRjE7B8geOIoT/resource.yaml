@@ -67,7 +67,7 @@ spec:
       http:
         paths:
           - path: /test(/|$)(.*)
-            pathType: Prefix
+            pathType: ImplementationSpecific
             backend:
               service:
                 name: wevervqrevr
