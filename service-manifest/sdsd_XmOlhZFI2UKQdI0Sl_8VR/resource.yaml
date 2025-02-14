@@ -52,6 +52,8 @@ spec:
               value: prod
             - name: DB_PASS
               value: test
+            - name: DB_NAME
+              value: test
       imagePullSecrets:
         - name: scoutflo-deepaks-docker
 
