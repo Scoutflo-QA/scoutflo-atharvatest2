@@ -59,14 +59,14 @@ metadata:
   namespace: default
   annotations:
     kubernetes.io/ingress.class: nginx
-    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
     nginx.ingress.kubernetes.io/default-backend: wevervqrevr
 spec:
   rules:
     - host: waitlistdocker-vrpno.scoutflo.agency
       http:
         paths:
-          - path: /test
+          - path: /test(/|$)(.*)
             pathType: Prefix
             backend:
               service:
