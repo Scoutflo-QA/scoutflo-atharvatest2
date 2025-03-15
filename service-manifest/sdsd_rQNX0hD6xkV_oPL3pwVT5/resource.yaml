@@ -1,0 +1,77 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: vertynrtynrtyn
+  namespace: default
+  labels:
+    app: vertynrtynrtyn
+spec:
+  type: ClusterIP
+  selector:
+    app: vertynrtynrtyn
+  ports:
+    - name: https
+      protocol: TCP
+      port: 3000
+      targetPort: 3000
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vertynrtynrtyn
+  namespace: default
+  labels:
+    app: vertynrtynrtyn
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vertynrtynrtyn
+  template:
+    metadata:
+      labels:
+        app: vertynrtynrtyn
+    spec:
+      containers:
+        - name: vertynrtynrtyn-container
+          image: satyamp07/waitlist:latest
+          ports:
+            - containerPort: 3000
+          resources:
+            requests:
+              memory: 512Mi
+              cpu: 250m
+            limits:
+              memory: 1024Mi
+              cpu: 500m
+          env:
+            - name: NEXT_PUBLIC_ATLAS_BACKEND
+              value: https://api.atlas.scoutflo.com/api
+      imagePullSecrets:
+        - name: scoutflo-satyam-docker-the-latest-docker
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: vertynrtynrtyn
+  namespace: default
+  annotations:
+    kubernetes.io/ingress.class: nginx
+spec:
+  rules:
+    - host: dont-wait-list-aq1sc.scoutflo.agency
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: vertynrtynrtyn
+                port:
+                  number: 3000
+  tls:
+    - hosts:
+        - dont-wait-list-aq1sc.scoutflo.agency
+      secretName: scoutflo-agency-wildcard-tls
