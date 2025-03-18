@@ -1,0 +1,90 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: obirnfblknlkn
+  namespace: test-eso
+  labels:
+    app: obirnfblknlkn
+spec:
+  type: ClusterIP
+  selector:
+    app: obirnfblknlkn
+  ports:
+    - name: https
+      protocol: TCP
+      port: 3000
+      targetPort: 3000
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: obirnfblknlkn
+  namespace: test-eso
+  labels:
+    app: obirnfblknlkn
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: obirnfblknlkn
+  template:
+    metadata:
+      labels:
+        app: obirnfblknlkn
+    spec:
+      containers:
+        - name: obirnfblknlkn-container
+          image: satyamp07/waitlist:latest
+          ports:
+            - containerPort: 3000
+          resources:
+            requests:
+              memory: 512Mi
+              cpu: 250m
+            limits:
+              memory: 1024Mi
+              cpu: 500m
+          env:
+            - name: NEXT_PUBLIC_ATLAS_BACKEND
+              value: https://api.atlas.scoutflo.com/api
+      imagePullSecrets:
+        - name: scoutflo-satyam-docker-the-latest-docker
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: obirnfblknlkn
+  namespace: test-eso
+  annotations:
+    kubernetes.io/ingress.class: nginx
+spec:
+  rules:
+    - host: bnnngnrvnrn.rkjangidbuilder.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: obirnfblknlkn
+                port:
+                  number: 3000
+    - host: dont-wait-list-1udvf.scoutflo.agency
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: obirnfblknlkn
+                port:
+                  number: 3000
+  tls:
+    - hosts:
+        - dont-wait-list-1udvf.scoutflo.agency
+      secretName: scoutflo-agency-wildcard-tls
+    - hosts:
+        - bnnngnrvnrn.rkjangidbuilder.com
+      secretName: wildcard-z07004282wlzt96eag2kr-tls
