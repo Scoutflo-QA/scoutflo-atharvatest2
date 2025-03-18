@@ -1,0 +1,90 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: evervrvrevnnnnnn
+  namespace: test-eso
+  labels:
+    app: evervrvrevnnnnnn
+spec:
+  type: ClusterIP
+  selector:
+    app: evervrvrevnnnnnn
+  ports:
+    - name: https
+      protocol: TCP
+      port: 3000
+      targetPort: 3000
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: evervrvrevnnnnnn
+  namespace: test-eso
+  labels:
+    app: evervrvrevnnnnnn
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: evervrvrevnnnnnn
+  template:
+    metadata:
+      labels:
+        app: evervrvrevnnnnnn
+    spec:
+      containers:
+        - name: evervrvrevnnnnnn-container
+          image: satyamp07/waitlist:latest
+          ports:
+            - containerPort: 3000
+          resources:
+            requests:
+              memory: 512Mi
+              cpu: 250m
+            limits:
+              memory: 1024Mi
+              cpu: 500m
+          env:
+            - name: NEXT_PUBLIC_ATLAS_BACKEND
+              value: https://api.atlas.scoutflo.com/api
+      imagePullSecrets:
+        - name: scoutflo-satyam-docker-the-latest-docker
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: evervrvrevnnnnnn
+  namespace: test-eso
+  annotations:
+    kubernetes.io/ingress.class: nginx
+spec:
+  rules:
+    - host: nbnbnbnbnnb.rkjangidbuilder.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: evervrvrevnnnnnn
+                port:
+                  number: 3000
+    - host: dont-wait-list-ha2bd.scoutflo.agency
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: evervrvrevnnnnnn
+                port:
+                  number: 3000
+  tls:
+    - hosts:
+        - dont-wait-list-ha2bd.scoutflo.agency
+      secretName: scoutflo-agency-wildcard-tls
+    - hosts:
+        - nbnbnbnbnnb.rkjangidbuilder.com
+      secretName: wildcard-z07004282wlzt96eag2kr-tls
