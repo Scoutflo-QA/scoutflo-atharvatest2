@@ -1,0 +1,90 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: vekrbnkejbvekjfbvekjb
+  namespace: test-eso
+  labels:
+    app: vekrbnkejbvekjfbvekjb
+spec:
+  type: ClusterIP
+  selector:
+    app: vekrbnkejbvekjfbvekjb
+  ports:
+    - name: https
+      protocol: TCP
+      port: 3000
+      targetPort: 3000
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vekrbnkejbvekjfbvekjb
+  namespace: test-eso
+  labels:
+    app: vekrbnkejbvekjfbvekjb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vekrbnkejbvekjfbvekjb
+  template:
+    metadata:
+      labels:
+        app: vekrbnkejbvekjfbvekjb
+    spec:
+      containers:
+        - name: vekrbnkejbvekjfbvekjb-container
+          image: satyamp07/waitlist:latest
+          ports:
+            - containerPort: 3000
+          resources:
+            requests:
+              memory: 512Mi
+              cpu: 250m
+            limits:
+              memory: 1024Mi
+              cpu: 500m
+          env:
+            - name: NEXT_PUBLIC_ATLAS_BACKEND
+              value: https://api.atlas.scoutflo.com/api
+      imagePullSecrets:
+        - name: scoutflo-satyam-docker-the-latest-docker
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: vekrbnkejbvekjfbvekjb
+  namespace: test-eso
+  annotations:
+    kubernetes.io/ingress.class: nginx
+spec:
+  rules:
+    - host: test-eso-e2e.rkjangidbuilder.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: vekrbnkejbvekjfbvekjb
+                port:
+                  number: 3000
+    - host: dont-wait-list-v3ok0.scoutflo.agency
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: vekrbnkejbvekjfbvekjb
+                port:
+                  number: 3000
+  tls:
+    - hosts:
+        - dont-wait-list-v3ok0.scoutflo.agency
+      secretName: scoutflo-agency-wildcard-tls
+    - hosts:
+        - test-eso-e2e.rkjangidbuilder.com
+      secretName: wildcard-z07004282wlzt96eag2kr-tls
